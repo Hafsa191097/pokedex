@@ -20,7 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         if(AuthService().user != null){
           log("User is logged in");
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushNamed(context, '/home');
+          log('next page');
         }else{
           Navigator.pushReplacementNamed(context, '/signup');
         }

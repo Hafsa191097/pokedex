@@ -1,9 +1,9 @@
+import 'package:Pokedex/Bloc/bloc/pokedex_bloc.dart';
 import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/Sources/signup_form.dart';
 import 'package:Pokedex/Views/home/home.dart';
 import 'package:Pokedex/Views/splash.dart';
 import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
-import 'package:Pokedex/cubit/pokemondata/pokemondata_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   AuthenticationCubit authenticationCubit = AuthenticationCubit();
+  PokedexBloc bloc =PokedexBloc();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,25 +35,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => const SplashScreen(),
         '/signup': (context) => BlocProvider.value(
               value: authenticationCubit,
               child: SignupForm(),
             ),
         '/login': (context) => BlocProvider.value(
               value: authenticationCubit,
-              child: LoginForm(),
+              child:const LoginForm(),
             ),
         '/home': (context) => MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => PokemondataCubit(),
+                  create: (context) => PokedexBloc()..add(const PokedexPageRequest(pageindex: 0)),
                 ),
                 BlocProvider.value(
-                  value: authenticationCubit,
+                  value: bloc,
                 ),
               ],
-              child: HomeScreen(),
+              child:const HomeScreen(),
             )
       },
     );

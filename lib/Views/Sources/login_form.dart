@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:Pokedex/Views/Sources/signup_form.dart';
 import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +11,7 @@ class LoginForm extends StatefulWidget {
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
+
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -81,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   builder: (context, state) {
                     if (state is AuthenticationLoading) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else {
                       return MaterialButton(
                         color: Colors.redAccent,
