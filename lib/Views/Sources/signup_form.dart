@@ -1,26 +1,38 @@
 import 'dart:developer';
 
+import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import 'login_form.dart';
 
-class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
 
-  @override
-  State<SignupForm> createState() => _SignupFormState();
-}
+// ignore: must_be_immutable
+class SignupForm extends StatelessWidget {
+  SignupForm({Key? key}) : super(key: key);
 
-class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormBuilderState>();
+
   final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
+
+  var emailController = TextEditingController();
+
+  var passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('SignUp',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),centerTitle: true, backgroundColor: Colors.redAccent,elevation: 0),
+      appBar: AppBar(
+          title: const Text(
+            'SignUp',
+            style: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.redAccent,
+          elevation: 0),
       body: SingleChildScrollView(
         child: FormBuilder(
           key: _formKey,
@@ -30,14 +42,13 @@ class _SignupFormState extends State<SignupForm> {
               children: [
                 const SizedBox(height: 50),
                 FormBuilderTextField(
+                  controller: emailController,
                   key: _emailFieldKey,
                   name: 'email',
-                  scrollPadding: EdgeInsets.only(left:10),
+                  scrollPadding: EdgeInsets.only(left: 10),
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    
                     prefixIcon: Icon(Icons.email_outlined),
-                    
                   ),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
@@ -47,7 +58,11 @@ class _SignupFormState extends State<SignupForm> {
                 const SizedBox(height: 10),
                 FormBuilderTextField(
                   name: 'password',
-                  decoration: const InputDecoration(labelText: 'Password',prefixIcon: Icon(Icons.password_outlined),),
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.password_outlined),
+                  ),
                   obscureText: true,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
@@ -60,7 +75,9 @@ class _SignupFormState extends State<SignupForm> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
-                    prefixIcon: (_formKey.currentState?.fields['confirm_password'] ?.hasError ?? false)
+                    prefixIcon: (_formKey.currentState
+                                ?.fields['confirm_password']?.hasError ??
+                            false)
                         ? const Icon(Icons.error, color: Colors.red)
                         : const Icon(Icons.check, color: Colors.green),
                   ),
@@ -71,51 +88,78 @@ class _SignupFormState extends State<SignupForm> {
                           : null,
                 ),
                 const SizedBox(height: 30),
-                
-                MaterialButton(
-                  color: Colors.redAccent,
-                  minWidth: double.infinity,
-                  height: 45,
-                  onPressed: () {
-                    if (_formKey.currentState?.isValid ?? false) {
-                      log("not signup");
-                      if (true) {
-                        log("Done signupp");
-                      }
+                BlocConsumer<AuthenticationCubit, AuthenticationState>(
+                  listener: (context, state) {
+                    if (state is AuthenticationSuccess) {
+                      Navigator.of(context).pushReplacementNamed('/home');
                     }
-                    debugPrint(_formKey.currentState?.value.toString());
+                    if (state is AuthenticationFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
+                    }
                   },
-                  child: const Text('SignUp', style: TextStyle(color: Colors.white)),
+                  builder: (context, state) {
+                    if (state is AuthenticationLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return MaterialButton(
+                        color: Colors.redAccent,
+                        minWidth: double.infinity,
+                        height: 45,
+                        onPressed: () {
+                          try {
+                            BlocProvider.of<AuthenticationCubit>(context)
+                                .createUser(emailController.text,
+                                    passwordController.text);
+                          } catch (e) {
+                            log(e.toString());
+                          }
+                        },
+                        child: const Text('SignUp',
+                            style: TextStyle(color: Colors.white)),
+                      );
+                    }
+
+                  },
                 ),
                 const SizedBox(height: 30),
                 TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) =>const LoginForm()));
-                },
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                  child:const Text.rich(
-                  textAlign: TextAlign.start,
-                  TextSpan(
-                    text: 'Already have an Account? ',
-                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.normal, color: Colors.grey, decoration: TextDecoration.none, ),
-                      
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: 'Log In',
-                        
-                        style: TextStyle(fontSize: 15,fontWeight: FontWeight.normal, color: Colors.redAccent, decoration: TextDecoration.none,
-                        ),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: const Text.rich(
+                    textAlign: TextAlign.start,
+                    TextSpan(
+                      text: 'Already have an Account? ',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey,
+                        decoration: TextDecoration.none,
                       ),
-                    ],
-                  ),
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: 'Log In',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.redAccent,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-        
               ],
             ),
           ),
@@ -123,4 +167,32 @@ class _SignupFormState extends State<SignupForm> {
       ),
     );
   }
+
+  // _getBtn(BuildContext context) {
+  //   return MaterialButton(
+  //     color: Colors.redAccent,
+  //     minWidth: double.infinity,
+  //     height: 45,
+  //     onPressed: () {
+  //       log('hi');
+  //       try {
+  //         authenticationBloc.add(
+  //           CreateUserEvent(
+  //             emailController.text,
+  //             passwordController.text,
+  //           ),
+  //         );
+  //         // context.read<AuthenticationBloc>().add(
+  //         //     CreateUserEvent(
+  //         //       emailController.text,
+  //         //       passwordController.text,
+  //         //     ),
+  //         //   );
+  //       } catch (e) {
+  //         log(e.toString());
+  //       }
+  //     },
+  //     child: const Text('SignUp', style: TextStyle(color: Colors.white)),
+  //   );
+  // }
 }
