@@ -89,7 +89,7 @@ class SignupForm extends StatelessWidget {
                 BlocConsumer<AuthenticationCubit, AuthenticationState>(
                   listener: (context, state) {
                     if (state is AuthenticationSuccess) {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      Navigator.of(context).pushReplacementNamed('/login');
                     }
                     if (state is AuthenticationFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -165,32 +165,4 @@ class SignupForm extends StatelessWidget {
       ),
     );
   }
-
-  // _getBtn(BuildContext context) {
-  //   return MaterialButton(
-  //     color: Colors.redAccent,
-  //     minWidth: double.infinity,
-  //     height: 45,
-  //     onPressed: () {
-  //       log('hi');
-  //       try {
-  //         authenticationBloc.add(
-  //           CreateUserEvent(
-  //             emailController.text,
-  //             passwordController.text,
-  //           ),
-  //         );
-  //         // context.read<AuthenticationBloc>().add(
-  //         //     CreateUserEvent(
-  //         //       emailController.text,
-  //         //       passwordController.text,
-  //         //     ),
-  //         //   );
-  //       } catch (e) {
-  //         log(e.toString());
-  //       }
-  //     },
-  //     child: const Text('SignUp', style: TextStyle(color: Colors.white)),
-  //   );
-  // }
 }

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   AuthenticationCubit authenticationCubit = AuthenticationCubit();
-  PokedexBloc bloc =PokedexBloc();
+  PokedexBloc bloc = PokedexBloc();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

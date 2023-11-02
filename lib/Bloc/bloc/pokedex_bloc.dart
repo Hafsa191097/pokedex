@@ -10,8 +10,12 @@ part 'pokedex_state.dart';
 
 class PokedexBloc extends Bloc<PokedexEvent, PokedexState> {
   final repository = PokedexRepository();
-  PokedexBloc() : super(PokedexInitial());
-  void mapEventToState(PokedexEvent event) async {
+  PokedexBloc() : super(PokedexInitial()){
+    on<PokedexEvent>(((event, emit) {
+      on<PokedexPageRequest>((event, emit) => emit(mapEventToState(event,emit)));
+    }));
+  }
+   mapEventToState(PokedexPageRequest event,Emitter emit) async {
    
     emit(PokedexLoading());
     try{
@@ -22,13 +26,12 @@ class PokedexBloc extends Bloc<PokedexEvent, PokedexState> {
       emit(PokedexLoadingError(error: e));
     }
   }
-  // @override
-  // Stream<PokedexState> mapEventToState(PokedexEvent event) async*{
+  // Stream<PokedexState> mapEventToState(PokedexEvent event , Emitter<PokedexState> emit) async*{
   //   if(event is PokedexPageRequest){
   //     yield PokedexLoading();
   //     try {
   //       final pageresponse = await repository.getpokemon(event.pageindex);
-  //       yield 
+  //       yield PokedexLoadingSuccess(pokedexlist: pageresponse.pokemonlistings, canloadnextpage: pageresponse.canloadnext);
   //     } catch (e) {
   //       yield PokedexLoadingError(error: e);
   //     }

@@ -5,6 +5,8 @@ abstract class PokedexState extends Equatable {
   
   @override
   List<Object> get props => [];
+
+  get pokedexlist => null;
 }
 
 final class PokedexInitial extends PokedexState {}
@@ -12,6 +14,7 @@ final class PokedexInitial extends PokedexState {}
 final class PokedexLoading extends PokedexState {}
 
 final class PokedexLoadingSuccess extends PokedexState {
+  @override
   final List<PokemonList> pokedexlist;
   final bool canloadnextpage;
 

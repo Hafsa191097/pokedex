@@ -16,7 +16,10 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
+  
+  var emailController = TextEditingController();
 
+  var passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +43,7 @@ class _LoginFormState extends State<LoginForm> {
                 FormBuilderTextField(
                   key: _emailFieldKey,
                   name: 'email',
+                  controller: emailController,
                   scrollPadding: EdgeInsets.only(left: 10),
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -53,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(height: 10),
                 FormBuilderTextField(
                   name: 'password',
+                  controller: passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     prefixIcon: Icon(Icons.password_outlined),
@@ -92,7 +97,8 @@ class _LoginFormState extends State<LoginForm> {
                             if (true) {
                               try {
                                 BlocProvider.of<AuthenticationCubit>(context)
-                                    .loginUser('email', 'password');
+                                    .loginUser(emailController.text,
+                                    passwordController.text);
                               } catch (e) {
                                 log(e.toString());
                               }

@@ -6,10 +6,12 @@ abstract class PokedexEvent extends Equatable {
   @override
   List<Object> get props => [];
 
+  // ignore: recursive_getters
   int get pageindex => pageindex;
 }
 
 class PokedexPageRequest extends PokedexEvent{
+  @override
   final int pageindex;
 
   const PokedexPageRequest({required this.pageindex});
