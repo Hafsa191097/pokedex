@@ -1,11 +1,10 @@
 import 'dart:developer';
-import 'dart:ffi';
+import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/home/Likes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:Pokedex/Blocs/pokemon_bloc/pokemon_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/adapters.dart';
 import '../../cubit/auth_bloc/authentication_cubit.dart';
 import '../../Models/character_card.dart';
 import '../../Models/page_response.dart';
@@ -41,14 +40,18 @@ class _HomePageState extends State<HomePage> {
             Navigator.push<void>(
               context,
               MaterialPageRoute<void>(
-                builder: (BuildContext context) =>  LikesPage(),
+                builder: (BuildContext context) => const LikesPage(),
               ),
             );
           }, icon: const Icon(Icons.favorite)),
           BlocListener<AuthenticationCubit, AuthenticationState>(
             listener: (context, statee) {
               if (statee is AuthenticationInitial) {
-                Navigator.of(context).pushReplacementNamed('/login');
+                Navigator.of(context).push( MaterialPageRoute<void>(
+                    builder: (BuildContext context) {
+                      return const LoginForm();
+                    },
+                  ));
               }
             },
             child: IconButton(

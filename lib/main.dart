@@ -1,6 +1,5 @@
 import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/Sources/signup_form.dart';
-import 'package:Pokedex/Views/home/Likes.dart';
 import 'package:Pokedex/Views/splash.dart';
 import 'package:Pokedex/Views/home/app.dart';
 import 'package:Pokedex/cubit/auth_bloc/authentication_cubit.dart';

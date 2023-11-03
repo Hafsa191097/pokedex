@@ -2,8 +2,6 @@ import 'package:Pokedex/Models/page_response.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import '../Views/home/Likes.dart';
-
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
   CharacterCard(
