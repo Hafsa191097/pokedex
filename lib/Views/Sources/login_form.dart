@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -59,7 +59,6 @@ class _LoginFormState extends State<LoginForm> {
                 FormBuilderTextField(
                   name: 'password',
                   controller: passwordController,
-                  
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     prefixIcon: Icon(Icons.password_outlined),
@@ -95,9 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                         minWidth: double.infinity,
                         height: 45,
                         onPressed: () {
-                          if (_formKey.currentState?.isValid ?? false) {
-                            log("done");
-                            if (true) {
+                          
                               try {
                                 BlocProvider.of<AuthenticationCubit>(context)
                                     .loginUser(emailController.text,
@@ -110,8 +107,6 @@ class _LoginFormState extends State<LoginForm> {
                                   ),
                                 );
                               }
-                            }
-                          }
                           debugPrint(_formKey.currentState?.value.toString());
                         },
                         child: const Text('Login',

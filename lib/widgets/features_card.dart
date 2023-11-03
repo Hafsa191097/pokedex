@@ -71,7 +71,7 @@ class _FeaturesCardState extends State<FeaturesCard> {
                                 child: Center(
                                     child: Text(
                                         data[index].ability!.name.toString(),
-                                        style: TextStyle(fontSize: 23,fontWeight: FontWeight.w600,color: Colors.white),
+                                        style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w600,color: Colors.white),
                                         textAlign: TextAlign.center))),
                           );
                         }
@@ -81,7 +81,7 @@ class _FeaturesCardState extends State<FeaturesCard> {
                       child: CircularProgressIndicator());
                 },
               ),
-            ), //ABILITIES
+            ),
             SizedBox(
               height: 40 ,
               child: BlocBuilder<DetailsBloc, DetailsState>(

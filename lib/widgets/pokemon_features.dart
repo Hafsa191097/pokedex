@@ -26,7 +26,10 @@ class _PokemonFeaturesState extends State<PokemonFeatures> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Center(
-              child: Image.asset(widget.widget.pokemon, height: 260.h)),
+              child: Image.network(widget.widget.pokemon , height: 260.h)
+              // child: Image.network(widget.widget.pokemon,height: 260.h,),
+              ),
+              
               FeaturesCard(name: widget.widget.name, pokemon: widget.widget.pokemon),
         ],
       ),
