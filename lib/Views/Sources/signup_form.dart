@@ -1,10 +1,10 @@
-import 'dart:developer';
 
-import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+
+import '../../cubit/auth_bloc/authentication_cubit.dart';
 
 
 // ignore: must_be_immutable
@@ -43,7 +43,7 @@ class SignupForm extends StatelessWidget {
                   controller: emailController,
                   key: _emailFieldKey,
                   name: 'email',
-                  scrollPadding: EdgeInsets.only(left: 10),
+                  scrollPadding:const EdgeInsets.only(left: 10),
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     prefixIcon: Icon(Icons.email_outlined),
@@ -114,7 +114,12 @@ class SignupForm extends StatelessWidget {
                                 .createUser(emailController.text,
                                     passwordController.text);
                           } catch (e) {
-                            log(e.toString());
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
                           }
                         },
                         child: const Text('SignUp',

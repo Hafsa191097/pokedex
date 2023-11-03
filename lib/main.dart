@@ -1,13 +1,14 @@
-import 'package:Pokedex/Bloc/bloc/pokedex_bloc.dart';
 import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/Sources/signup_form.dart';
-import 'package:Pokedex/Views/home/home.dart';
 import 'package:Pokedex/Views/splash.dart';
-import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
+import 'package:Pokedex/Views/home/app.dart';
+import 'package:Pokedex/cubit/auth_bloc/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
+import 'Blocs/details_bloc/details_bloc.dart';
+import 'Blocs/pokemon_bloc/pokemon_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,6 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   AuthenticationCubit authenticationCubit = AuthenticationCubit();
-  PokedexBloc bloc = PokedexBloc();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -46,14 +46,21 @@ class MyApp extends StatelessWidget {
             ),
         '/home': (context) => MultiBlocProvider(
               providers: [
+                 
                 BlocProvider(
-                  create: (context) => PokedexBloc()..add(const PokedexPageRequest(pageindex: 0)),
+                  create: (context) => AuthenticationCubit(),
+                  
                 ),
                 BlocProvider.value(
-                  value: bloc,
+                  value: authenticationCubit,
                 ),
+                BlocProvider(
+                  create: (context) => PokemonBloc()),
+                BlocProvider(
+                create: (context) => DetailsBloc()),
+                
               ],
-              child:const HomeScreen(),
+              child: const App(),
             )
       },
     );

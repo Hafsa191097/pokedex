@@ -1,1 +1,3 @@
-const String baseUrl = 'https://pokeapi.co/';
+const baseUrl = 'pokeapi.co';
+
+const kDefaultPadding = 20.0;

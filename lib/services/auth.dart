@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -6,9 +7,12 @@ class AuthService {
   final _auth = FirebaseAuth.instance;
 
   Future<User?> emailLogin(String email, String password) async {
-    var user = await _auth.signInWithEmailAndPassword(
+ 
+      var user = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     return user.user;
+    
+    
   }
 
   /// Anonymous Firebase login

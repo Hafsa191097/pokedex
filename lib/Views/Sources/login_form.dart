@@ -1,9 +1,10 @@
 import 'dart:developer';
-import 'package:Pokedex/cubit/authentication/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+
+import '../../cubit/auth_bloc/authentication_cubit.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -58,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
                 FormBuilderTextField(
                   name: 'password',
                   controller: passwordController,
+                  
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     prefixIcon: Icon(Icons.password_outlined),
@@ -86,7 +88,8 @@ class _LoginFormState extends State<LoginForm> {
                   builder: (context, state) {
                     if (state is AuthenticationLoading) {
                       return const CircularProgressIndicator();
-                    } else {
+                    } 
+                    else{
                       return MaterialButton(
                         color: Colors.redAccent,
                         minWidth: double.infinity,
@@ -100,7 +103,12 @@ class _LoginFormState extends State<LoginForm> {
                                     .loginUser(emailController.text,
                                     passwordController.text);
                               } catch (e) {
-                                log(e.toString());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
                               }
                             }
                           }
