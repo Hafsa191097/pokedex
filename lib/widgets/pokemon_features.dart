@@ -4,13 +4,19 @@ import 'package:Pokedex/widgets/features_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PokemonFeatures extends StatelessWidget {
+class PokemonFeatures extends StatefulWidget {
   const PokemonFeatures({
     Key? key,
     required this.widget,
   }) : super(key: key);
 
   final CharacterDetailPage widget;
+
+  @override
+  State<PokemonFeatures> createState() => _PokemonFeaturesState();
+}
+
+class _PokemonFeaturesState extends State<PokemonFeatures> {
 
 
   @override
@@ -20,10 +26,12 @@ class PokemonFeatures extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Center(
-              child: Image.asset(widget.pokemon, height: 260.h)),
-          FeaturesCard(name: widget.name, pokemon: widget.pokemon),
+              child: Image.asset(widget.widget.pokemon, height: 260.h)),
+              FeaturesCard(name: widget.widget.name, pokemon: widget.widget.pokemon),
         ],
       ),
     );
   }
+  
+
 }

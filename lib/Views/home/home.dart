@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/app_images.dart';
 import '../../cubit/auth_bloc/authentication_cubit.dart';
-import '../../widgets/character_card.dart';
+import '../../Models/character_card.dart';
 
 
 class HomePage extends StatefulWidget {
