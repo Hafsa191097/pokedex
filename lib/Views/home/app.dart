@@ -10,10 +10,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize:const Size(360,690),
-        builder: (context,widget)
+        builder: (context,index)
         => const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: HomePage(),
+          home: HomePage(index: 5,),
         ));
   }
 }

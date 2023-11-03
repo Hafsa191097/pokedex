@@ -1,5 +1,6 @@
 import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/Sources/signup_form.dart';
+import 'package:Pokedex/Views/home/Likes.dart';
 import 'package:Pokedex/Views/splash.dart';
 import 'package:Pokedex/Views/home/app.dart';
 import 'package:Pokedex/cubit/auth_bloc/authentication_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'firebase_options.dart';
-import 'Blocs/details_bloc/details_bloc.dart';
 import 'Blocs/pokemon_bloc/pokemon_bloc.dart';
 
 Future<void> main() async {
@@ -63,12 +63,12 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider(
                   create: (context) => PokemonBloc()),
-                BlocProvider(
-                create: (context) => DetailsBloc()),
+                
                 
               ],
               child: const App(),
-            )
+            ),
+            
       },
     );
   }

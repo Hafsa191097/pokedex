@@ -1,16 +1,18 @@
 import 'dart:developer';
+import 'dart:ffi';
+import 'package:Pokedex/Views/home/Likes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:Pokedex/Blocs/pokemon_bloc/pokemon_bloc.dart';
-import 'package:Pokedex/Views/home/character_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import '../../cubit/auth_bloc/authentication_cubit.dart';
 import '../../Models/character_card.dart';
-import '../../data/repository/page_response.dart';
+import '../../Models/page_response.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
+   const HomePage({Key? key, required this.index}) : super(key: key);
+  final int index;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -29,13 +31,20 @@ class _HomePageState extends State<HomePage> {
         title: const Text(
           'PokeDex',
           style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600, ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
         backgroundColor: Colors.redAccent,
         elevation: 0,
         actions: [
+          IconButton(onPressed: (){
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) =>  LikesPage(),
+              ),
+            );
+          }, icon: const Icon(Icons.favorite)),
           BlocListener<AuthenticationCubit, AuthenticationState>(
             listener: (context, statee) {
               if (statee is AuthenticationInitial) {
@@ -64,23 +73,17 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    log(PokemonList(
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(PokemonList(
                         id: state.pokemonList[index].id,
                         name: state.pokemonList[index].name)
-                    .imageUrl);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CharacterDetailPage(
-                          name: state.pokemonList[index].name.toString(),
-                          pokemon: PokemonList(
-                                  id: state.pokemonList[index].id,
-                                  name: state.pokemonList[index].name)
-                              .imageUrl,
-                          url: state.pokemonList[index].url.toString(),
+                    .imageUrl),
+                          backgroundColor: Colors.redAccent,
                         ),
-                      ),
-                    );
+                      );
+                    
                   },
                   child: CharacterCard(state, index));
             },
@@ -94,3 +97,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

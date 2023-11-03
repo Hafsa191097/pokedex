@@ -1,5 +1,5 @@
 
-import 'package:Pokedex/data/repository/dio_client.dart';
+import 'package:Pokedex/data/repository/api.dart';
 import 'package:Pokedex/Models/results.dart';
 import 'package:dio/dio.dart';
 
