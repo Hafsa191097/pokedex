@@ -1,4 +1,5 @@
 import 'package:Pokedex/Models/page_response.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -17,7 +18,7 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
-  
+  User? user;
   @override
   void initState() {
     super.initState();
@@ -66,18 +67,19 @@ class _CharacterCardState extends State<CharacterCard> {
                             child: IconButton(
                               icon: fav
                                   ? const Icon(Icons.favorite)
-                                  : const Icon(Icons.favorite_border),
+                                  : const Icon(
+                                      Icons.favorite_border),
                               color: fav ? Colors.red : Colors.grey,
                               onPressed: () async {
                                 if (fav) {
                                   await box.delete(widget.index);
-                                  
                                 } else {
                                   await box.put(
                                       widget.index,
-                                      widget.state.pokemonList[widget.index]
+                                      widget
+                                          .state
+                                          .pokemonList[widget.index]
                                           .name);
-                                
                                 }
                               },
                             ),

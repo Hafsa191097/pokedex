@@ -10,8 +10,8 @@ import '../../Models/character_card.dart';
 import '../../Models/page_response.dart';
 
 class HomePage extends StatefulWidget {
-   const HomePage({Key? key, required this.index}) : super(key: key);
-  final int index;
+  const HomePage({Key? key}) : super(key: key);
+ 
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -30,28 +30,47 @@ class _HomePageState extends State<HomePage> {
         title: const Text(
           'PokeDex',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600, ),
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.redAccent,
         elevation: 0,
         actions: [
-          IconButton(onPressed: (){
-            Navigator.push<void>(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => const LikesPage(),
-              ),
-            );
-          }, icon: const Icon(Icons.favorite)),
+          IconButton(
+            onPressed: () {
+               Navigator.push<void>(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const LikesPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.favorite),
+          ),
           BlocListener<AuthenticationCubit, AuthenticationState>(
             listener: (context, statee) {
-              if (statee is AuthenticationInitial) {
-                Navigator.of(context).push( MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return const LoginForm();
-                    },
-                  ));
+              if (statee is AuthenticationLogout) {
+                try {
+                  Navigator.pushNamed(context,'/login');
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.toString()),
+                      action: SnackBarAction(
+                        label: 'Error',
+                        onPressed: () {
+                          
+                        },
+                      ),
+                    ),
+                  );
+
+                }
+                
+
               }
             },
             child: IconButton(
@@ -65,6 +84,7 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.logout),
             ),
           ),
+
         ],
       ),
       body: BlocBuilder<PokemonBloc, PokemonState>(builder: (context, state) {
@@ -76,17 +96,15 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(PokemonList(
-                        id: state.pokemonList[index].id,
-                        name: state.pokemonList[index].name)
-                    .imageUrl),
-                          backgroundColor: Colors.redAccent,
-                        ),
-                      );
-                    
+                      SnackBar(
+                        content: Text(PokemonList(
+                                id: state.pokemonList[index].id,
+                                name: state.pokemonList[index].name)
+                            .imageUrl),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
                   },
                   child: CharacterCard(state, index));
             },
@@ -100,4 +118,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

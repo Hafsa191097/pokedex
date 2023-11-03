@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -94,20 +93,23 @@ class _LoginFormState extends State<LoginForm> {
                         minWidth: double.infinity,
                         height: 45,
                         onPressed: () {
-                          
-                              try {
-                                BlocProvider.of<AuthenticationCubit>(context)
-                                    .loginUser(emailController.text,
-                                    passwordController.text);
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.toString()),
-                                    backgroundColor: Colors.redAccent,
-                                  ),
-                                );
+                              if(_formKey.currentState!.isValid){
+                                try {
+                                  BlocProvider.of<AuthenticationCubit>(context)
+                                      .loginUser(emailController.text,
+                                      passwordController.text);
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.toString()),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                                debugPrint(_formKey.currentState?.value.toString());
                               }
-                          debugPrint(_formKey.currentState?.value.toString());
+                              
+                          
                         },
                         child: const Text('Login',
                             style: TextStyle(color: Colors.white)),

@@ -5,7 +5,6 @@ class Results {
 
   Results({required this.id, required this.name});
   String get imageUrl => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
-  int get exactid => int.parse(('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png').split('/')[6]);
   
   factory Results.fromJson(Map<String, dynamic> json) {
     final name = json['name'];

@@ -11,9 +11,14 @@ class App extends StatelessWidget {
     return ScreenUtilInit(
         designSize:const Size(360,690),
         builder: (context,index)
-        => const MaterialApp(
+        => MaterialApp(
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
+            appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+            useMaterial3: true,
+          ),
           debugShowCheckedModeBanner: false,
-          home: HomePage(index: 5,),
+          home: HomePage(),
         ));
   }
 }

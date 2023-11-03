@@ -26,7 +26,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     try{
       emit(AuthenticationLoading());
       await AuthService().signOut();
-      emit(AuthenticationInitial());
+      emit(AuthenticationLogout());
     } catch(e){
       emit(AuthenticationFailure(e.toString()));
     }

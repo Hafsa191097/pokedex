@@ -17,25 +17,25 @@ Future<void> main() async {
   await Hive.initFlutter();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-    
   );
   
   await Hive.openBox('favorites');
   runApp(MyApp());
 }
-
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   // This widget is the root of your application.
   AuthenticationCubit authenticationCubit = AuthenticationCubit();
+  // PokedexBloc bloc = PokedexBloc();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PokeDex App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
+        appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
@@ -52,22 +52,15 @@ class MyApp extends StatelessWidget {
             ),
         '/home': (context) => MultiBlocProvider(
               providers: [
-                 
                 BlocProvider(
-                  create: (context) => AuthenticationCubit(),
-                  
+                  create: (context) => PokemonBloc(),
                 ),
                 BlocProvider.value(
                   value: authenticationCubit,
                 ),
-                BlocProvider(
-                  create: (context) => PokemonBloc()),
-                
-                
               ],
-              child: const App(),
-            ),
-            
+              child:const App(),
+            )
       },
     );
   }

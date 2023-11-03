@@ -109,18 +109,21 @@ class SignupForm extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 45,
                         onPressed: () {
-                          try {
-                            BlocProvider.of<AuthenticationCubit>(context)
-                                .createUser(emailController.text,
-                                    passwordController.text);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
+                          if(_formKey.currentState!.isValid){
+                            try {
+                              BlocProvider.of<AuthenticationCubit>(context)
+                                  .createUser(emailController.text,
+                                      passwordController.text);
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
                           }
+                          
                         },
                         child: const Text('SignUp',
                             style: TextStyle(color: Colors.white)),

@@ -1,5 +1,4 @@
 part of 'authentication_cubit.dart';
-
 sealed class AuthenticationState extends Equatable {
   const AuthenticationState();
 
@@ -10,6 +9,8 @@ sealed class AuthenticationState extends Equatable {
 final class AuthenticationInitial extends AuthenticationState {}
 
 final class AuthenticationLoading extends AuthenticationState {}
+
+final class AuthenticationLogout extends AuthenticationState {}
 
 final class AuthenticationSuccess extends AuthenticationState {
   final User user;
