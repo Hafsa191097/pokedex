@@ -10,20 +10,13 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
 
   PokemonClient pokemonRepository=PokemonClient();
   List<Results>? pokemonNameList=[];
-
-
-
   PokemonBloc() : super(PokemonInitial()) {
     on<PokemonEvent>((event, emit) {});
 
     on<GetPokemonNameEvent>((event,emit)async{
       pokemonNameList=await pokemonRepository.getFetch();
       emit(GetPokemonNameState(pokemonList: pokemonNameList!));
+
     });
-
-    
-
   }
-
-
 }

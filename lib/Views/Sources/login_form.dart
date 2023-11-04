@@ -24,6 +24,8 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading:false,
+        leading: null,
           title: const Text(
             'LogIn',
             style: TextStyle(
@@ -72,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                 BlocConsumer<AuthenticationCubit, AuthenticationState>(
                   listener: (context, state) {
                     if (state is AuthenticationSuccess) {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      Navigator.of(context).pushNamed('/home');
                     }
                     if (state is AuthenticationFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,23 +95,19 @@ class _LoginFormState extends State<LoginForm> {
                         minWidth: double.infinity,
                         height: 45,
                         onPressed: () {
-                              if(_formKey.currentState!.isValid){
-                                try {
-                                  BlocProvider.of<AuthenticationCubit>(context)
-                                      .loginUser(emailController.text,
-                                      passwordController.text);
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                }
-                                debugPrint(_formKey.currentState?.value.toString());
-                              }
-                              
-                          
+                          try {
+                            BlocProvider.of<AuthenticationCubit>(context)
+                                .loginUser(emailController.text,
+                                passwordController.text);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                          debugPrint(_formKey.currentState?.value.toString());
                         },
                         child: const Text('Login',
                             style: TextStyle(color: Colors.white)),

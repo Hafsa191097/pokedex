@@ -19,10 +19,14 @@ class SignupForm extends StatelessWidget {
 
   var passwordController = TextEditingController();
 
+  var confirmpasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading:false,
+        leading: null,
           title: const Text(
             'SignUp',
             style: TextStyle(
@@ -69,6 +73,7 @@ class SignupForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 FormBuilderTextField(
+                  controller: confirmpasswordController,
                   name: 'confirm_password',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
@@ -109,11 +114,20 @@ class SignupForm extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 45,
                         onPressed: () {
-                          if(_formKey.currentState!.isValid){
                             try {
-                              BlocProvider.of<AuthenticationCubit>(context)
+                              if(passwordController.text == confirmpasswordController.text){
+                                BlocProvider.of<AuthenticationCubit>(context)
                                   .createUser(emailController.text,
                                       passwordController.text);
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Password & Confirm Password Should be Same'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                              }
+                              
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -122,9 +136,7 @@ class SignupForm extends StatelessWidget {
                                 ),
                               );
                             }
-                          }
-                          
-                        },
+                          },
                         child: const Text('SignUp',
                             style: TextStyle(color: Colors.white)),
                       );

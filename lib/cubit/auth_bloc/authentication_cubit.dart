@@ -34,6 +34,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   void createUser(String email, String password) async {
     try{
+      
       emit(AuthenticationLoading());
       User? user = await AuthService().registerUser(email, password);
       emit(AuthenticationSuccess(user!));

@@ -19,6 +19,13 @@ class LikesPage extends StatefulWidget {
 class _LikesPageState extends State<LikesPage> {
 
   @override
+  void initState() {
+    
+    super.initState();
+    BlocProvider.of<PokemonBloc>(context).add(GetPokemonNameEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     
     return Scaffold(
@@ -26,7 +33,7 @@ class _LikesPageState extends State<LikesPage> {
         title: const Text(
           'Likes Page',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600, ),
+              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500, ),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),

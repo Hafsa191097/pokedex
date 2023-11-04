@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:Pokedex/Views/Sources/login_form.dart';
 import 'package:Pokedex/Views/home/Likes.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:Pokedex/Blocs/pokemon_bloc/pokemon_bloc.dart';
@@ -8,10 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/auth_bloc/authentication_cubit.dart';
 import '../../Models/character_card.dart';
 import '../../Models/page_response.dart';
+import '../../data/repository/pokemon_client.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
- 
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -22,39 +22,30 @@ class _HomePageState extends State<HomePage> {
     BlocProvider.of<PokemonBloc>(context).add(GetPokemonNameEvent());
     super.initState();
   }
-
+  PokemonClient pokemonRepository=PokemonClient();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
+        automaticallyImplyLeading:false,
         title: const Text(
           'PokeDex',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 25,
-            fontWeight: FontWeight.w600,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.redAccent,
         elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () {
-               Navigator.push<void>(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const LikesPage(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.favorite),
-          ),
-          BlocListener<AuthenticationCubit, AuthenticationState>(
+          BlocListener<PokemonBloc, PokemonState>(
             listener: (context, statee) {
-              if (statee is AuthenticationLogout) {
+              if (statee is PokemonLoading) {
                 try {
-                  Navigator.pushNamed(context,'/login');
+                  Navigator.pushNamed(context, '/likes');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -62,15 +53,33 @@ class _HomePageState extends State<HomePage> {
                       action: SnackBarAction(
                         label: 'Error',
                         onPressed: () {
-                          
+                          log(e.toString());
                         },
                       ),
                     ),
                   );
-
                 }
-                
-
+              }
+            },
+            child: IconButton(
+              onPressed: () {
+                try {
+                  Navigator.pushNamed(context, '/likes');
+                } catch (e) {
+                  log(e.toString());
+                }
+              },
+              icon: const Icon(Icons.favorite,size: 20,),
+            ),
+          ),
+          BlocListener<AuthenticationCubit, AuthenticationState>(
+            listener: (context, statee) {
+              if (statee is AuthenticationLogout) {
+                try {
+                  Navigator.pushNamed(context, '/login');
+                } catch (e) {
+                  log(e.toString());
+                }
               }
             },
             child: IconButton(
@@ -81,10 +90,9 @@ class _HomePageState extends State<HomePage> {
                   log(e.toString());
                 }
               },
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.logout,size: 20,),
             ),
           ),
-
         ],
       ),
       body: BlocBuilder<PokemonBloc, PokemonState>(builder: (context, state) {

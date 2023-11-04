@@ -4,7 +4,12 @@ abstract class PokemonEvent {}
 
 class GetPokemonNameEvent extends PokemonEvent{}
 
-class CharacterFeaturesEvent extends PokemonEvent{
-  final String url;
-  CharacterFeaturesEvent(this.url);
+class GetLikesEvent extends PokemonEvent{}
+
+class GetLikesLoading extends PokemonEvent{}
+
+class GetLikesError extends PokemonEvent{
+  final e;
+  GetLikesError(String string, { required this.e});
 }
+
